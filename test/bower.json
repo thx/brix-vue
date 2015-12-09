@@ -1,0 +1,15 @@
+{
+  "name": "test",
+  "dependencies": {},
+  "devDependencies": {
+    "requirejs": "*",
+    "mocha": "*",
+    "chai": "*",
+    "underscore": "*",
+    "jquery": "~2.1.1",
+    "brix-loader": "master",
+    "vue": "~1.0.10",
+    "accounting": "~0.3.2",
+    "moment": "~2.10.6"
+  }
+}

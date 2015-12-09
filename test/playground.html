@@ -1,0 +1,235 @@
+<script src="http://g.tbcdn.cn/thx/brix-release/0.1.1/require-config-css-debug.js"></script>
+<!-- <script src="http://mo.local:4242/require-config-css.js"></script> -->
+<script>
+    require.config({
+        paths: {
+            'brix/vue': '../dist/vue-debug'
+        }
+    })
+</script>
+<link rel="stylesheet" type="text/css" href="./playground.css">
+
+<div id="hero">
+    <div class="row">
+        <div class="col-sm-2">v-text</div>
+        <div class="col-sm-10">
+            <input v-model="msg" class="mb10"><br>
+            <span v-text="msg"></span> = <span>{{msg}}</span>
+        </div>
+    </div><hr>
+    <div class="row">
+        <div class="col-sm-2">v-html</div>
+        <div class="col-sm-10">
+            <input v-model="html" class="mb10"><br>
+            <span v-html="html"></span> = <span>{{{html}}}</span>
+        </div>
+    </div><hr>
+    <div class="row">
+        <div class="col-sm-2">v-if</div>
+        <div class="col-sm-10">
+            <input v-model="if" class="mb10"><br>
+            <span v-if="if">Yes!</span>
+            <span v-else>No!</span>
+        </div>
+    </div><hr>
+    <div class="row">
+        <div class="col-sm-2">v-show</div>
+        <div class="col-sm-10">
+            <input v-model="show" class="mb10"><br>
+            <span v-show="show">Hello!</span>
+            <span v-else>Fuck!</span>
+        </div>
+    </div><hr>
+    <div class="row">
+        <div class="col-sm-2">v-for</div>
+        <div class="col-sm-10">
+            <div><span v-for="item in array">{{ item }} , </span></div>
+            <div><span v-for="(index, item) in array" >{{index}}: {{ item }} , </span></div>
+            <div><span v-for="item in object">{{ item }} , </span></div>
+            <div><span v-for="(key, item) in object">{{key}}: {{ item }} , </span></div>
+            <div><span v-for="item in number">{{ item }} , </span></div>
+            <div><span v-for="item in string">{{ item }} , </span></div>
+        </div>
+    </div><hr>
+    <div class="row">
+        <div class="col-sm-2">v-model</div>
+        <div class="col-sm-10">
+            <div>
+                <input type="text" v-model="model.text" class="mr10"> 
+                {{model.text}}
+            </div>
+            <div>
+                <label><input type="checkbox" v-model="model.checked1"> {{ model.checked1 }}</label>
+                <label><input type="checkbox" v-model="model.checked2" value="model.checked2"> {{ model.checked2 }}</label>
+            </div>
+            <div>
+                <label><input type="checkbox" v-model="model.checked3" value="Foo"> Foo </label>
+                <label><input type="checkbox" v-model="model.checked3" value="Bar"> Bar </label>
+                <label><input type="checkbox" v-model="model.checked3" value="Faz"> Faz </label>
+                <span>{{ model.checked3 | json }}</span>
+            </div>
+            <div>
+                <label><input type="radio" v-model="model.picked1" value="Foo"> Foo </label>
+                <span>{{ model.picked1 | json }}</span>
+                <br>
+                <label><input type="radio" v-model="model.picked2" value="Bar"> Bar </label>
+                <label><input type="radio" v-model="model.picked2" value="Faz"> Faz </label>
+                <span>{{ model.picked2 | json }}</span>
+            </div>
+            <div>
+                <select v-model="model.selected1">
+                    <option selected>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                </select>
+                <span>{{ model.selected1 }}</span>
+                <select v-model="model.selected2" multiple>
+                    <option selected>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                </select>
+                <span>{{ model.selected2 | json }}</span>
+            </div>
+        </div>
+    </div><hr>
+
+    <!--  -->
+    <div class="row">
+        <div class="col-sm-2">dropdown</div>
+        <div class="col-sm-10">
+            <span class="mb20 mr10" v-for="item in list">
+                <select bx-name="components/dropdown" v-model="dropdown" data-value="1">
+                    <optgroup label="optgroup 1">
+                        <option value="1">Action</option>
+                    </optgroup>
+                    <optgroup label="optgroup 2">
+                        <option value="2">Another action</option>
+                    </optgroup>
+                    <optgroup label="optgroup 3">
+                        <option value="3">Something else here</option>
+                    </optgroup>
+                </select>
+            </span>
+        </div>
+    </div><hr>
+    <div class="row">
+        <div class="col-sm-2">datepicker</div>
+        <div class="col-sm-10">
+            <input bx-name="components/datepickerwrapper" v-model="date" 
+                class="mb10 mr10">
+            <input bx-name="components/datepickerwrapper" v-model="date" 
+                data-unlimits="[ '2099-1-1' ]" 
+                class="mb10 mr10">
+            <input bx-name="components/datepickerwrapper" v-model="date"
+                data-type="date time" 
+                data-dates="[ '2015-1-1 1:1:1' ]" 
+                class="mb10 mr10" >
+            <div bx-name="components/datepickerwrapper" 
+                data-dates="[ '2015-1-1', '2015-1-2']" 
+                class="datepickerwrapper-trigger mb10 mr10">
+                <span data-index="0">2015-1-1</span> 至 <span data-index="1">2015-1-2</span>
+                <i class="brixfont pull-right ml5 down">&#xe623;</i>
+                <i class="brixfont pull-right ml5 up">&#xe62e;</i>
+                <input data-hidden-index="0" type="hidden" v-model="start">
+                <input data-hidden-index="1" type="hidden" v-model="end">
+            </div>
+            <hr>
+            <div v-for="(index, item) in array"
+                bx-name="components/datepickerwrapper" 
+                data-dates="[ '2015-1-1', '2015-1-2']" 
+                class="datepickerwrapper-trigger mb10 mr10" 
+                mx-change="handler">
+                <span data-index="0">2015-1-1</span> 至 <span data-index="1">2015-1-2</span>
+                <i class="brixfont pull-right ml5 down">&#xe623;</i>
+                <i class="brixfont pull-right ml5 up">&#xe62e;</i>
+                <input data-hidden-index="0" type="hidden" v-model="start">
+                <input data-hidden-index="1" type="hidden" v-model="end">
+            </div>
+        </div>
+    </div><hr>
+    <div class="row">
+        <div class="col-sm-2">pagination</div>
+        <div class="col-sm-10">
+            <div class="mb10" 
+                bx-name="components/pagination" 
+                data-total="{{total}}" 
+                data-cursor="{{cursor}}" 
+                data-limit="{{limit}}" 
+                data-simplify="true" 
+                mx-change="handler"></div>
+            <div class="mb10" 
+                bx-name="components/pagination" 
+                data-total="{{total}}" 
+                data-cursor="{{cursor}}" 
+                data-limit="{{limit}}" 
+                mx-change="handler"></div>
+        </div>
+    </div><hr>
+    <div class="row">
+        <div class="col-sm-2">complex</div>
+        <div class="col-sm-10">
+            <span v-if="if" class="mb20 mr10">
+                <select bx-name="components/dropdown" v-model="dropdown" data-value="1">
+                    <optgroup label="optgroup 1">
+                        <option value="1">Action</option>
+                    </optgroup>
+                    <optgroup label="optgroup 2">
+                        <option value="2">Another action</option>
+                    </optgroup>
+                    <optgroup label="optgroup 3">
+                        <option value="3">Something else here</option>
+                    </optgroup>
+                </select>
+            </span>
+            <select v-if="if" bx-name="components/dropdown" v-model="dropdown" data-value="1">
+                <optgroup label="optgroup 1">
+                    <option value="1">Action</option>
+                </optgroup>
+                <optgroup label="optgroup 2">
+                    <option value="2">Another action</option>
+                </optgroup>
+                <optgroup label="optgroup 3">
+                    <option value="3">Something else here</option>
+                </optgroup>
+            </select>
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Index</th>
+                            <th>Contet</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(index, item) in array">
+                            <td>{{ index }}</td>
+                            <td><span bx-name="components/popover" data-content="{{index}} {{item}}">{{ item }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div><hr>
+       <div class="row">
+        <div class="col-sm-2">filters</div>
+        <div class="col-sm-10">
+            <input v-model="price" number class="mb10">
+            <div> {{{ price | X.xx | color.brand    }}} <i class="ml10"> color.brand   </i> </div>
+            <div> {{{ price | X.xx | color.help     }}} <i class="ml10"> color.help    </i> </div>
+            <div> {{{ price | X.xx | color.info     }}} <i class="ml10"> color.info    </i> </div>
+            <div> {{{ price | X.xx | color.gray     }}} <i class="ml10"> color.gray    </i> </div>
+            <div> {{{ price | X.xx | color.border   }}} <i class="ml10"> color.border  </i> </div>
+            <div> {{{ price | X.xx | color.warning  }}} <i class="ml10"> color.warning </i> </div>
+            <div> {{{ price | X.xx | color.danger   }}} <i class="ml10"> color.danger  </i> </div>
+            <div> {{{ price | X.xx | color.success  }}} <i class="ml10"> color.success </i> </div>
+            <div> {{{ price | X.xx | color.fail     }}} <i class="ml10"> color.fail    </i> </div>
+        </div>
+    </div><hr>
+
+    <!--  -->
+    <div class="col-sm-12">
+        <!-- <pre class="pre" v-text="$data | json 4"></pre> -->
+    </div>
+</div>
+
+<script src="./playground.js"></script>

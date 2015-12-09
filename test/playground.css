@@ -1,0 +1,15 @@
+#hero {
+	padding: 20px;
+}
+.pre {
+    margin: 0;
+    border: none;
+    padding: 18px 40px;
+    border-radius: 6px;
+}
+.row .col-sm-2 {
+	font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: right;
+}
