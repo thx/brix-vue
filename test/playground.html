@@ -98,7 +98,7 @@
         <div class="col-sm-2">dropdown</div>
         <div class="col-sm-10">
             <span class="mb20 mr10" v-for="item in list">
-                <select bx-name="components/dropdown" v-model="dropdown" data-value="1">
+                <select bx-name="components/dropdown" v-model="dropdown" data-value="1" mx-change="">
                     <optgroup label="optgroup 1">
                         <option value="1">Action</option>
                     </optgroup>
@@ -109,6 +109,7 @@
                         <option value="3">Something else here</option>
                     </optgroup>
                 </select>
+                {{dropdown}}
             </span>
         </div>
     </div><hr>
@@ -133,6 +134,8 @@
                 <input data-hidden-index="0" type="hidden" v-model="start">
                 <input data-hidden-index="1" type="hidden" v-model="end">
             </div>
+            <span>{{date}}</span>
+            <span>{{start}} - {{end}}</span>
             <hr>
             <div v-for="(index, item) in array"
                 bx-name="components/datepickerwrapper" 

@@ -72,12 +72,12 @@ define(
             }
             if (dir.frags && dir.frags.length) {
                 _.each(dir.frags, function(item /*, index*/ ) {
-                    if (item && item.node && item.node.nodeType === 1) nodes.push(item)
+                    if (item && item.node && item.node.nodeType === 1) nodes.push(item.node)
                 })
             }
             if (dir.nodes && dir.nodes.length) {
                 _.each(dir.nodes, function(item /*, index*/ ) {
-                    if (item && item.node && item.node.nodeType === 1) nodes.push(item)
+                    if (item && item.node && item.node.nodeType === 1) nodes.push(item.node)
                 })
             }
             return nodes
