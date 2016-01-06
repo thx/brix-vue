@@ -11,6 +11,10 @@ require(
         window.Vue = Vue
         Vue.config.debug = true
 
+        Vue.filter('length', function(value) {
+            return value.length
+        })
+
         function View() {}
 
         View.prototype.init = function() {
@@ -38,7 +42,15 @@ require(
                     total: 100,
                     cursor: 1,
                     limit: 10,
-                    list: [0, 1, 2]
+                    list: [0, 1, 2],
+                    name: '',
+                    users: [{
+                        name: 'Bruce'
+                    }, {
+                        name: 'Chuck'
+                    }, {
+                        name: 'Jackie'
+                    }]
                 },
                 computed: {},
                 methods: {},

@@ -71,6 +71,11 @@ define(
             })
 
             // 
+            Vue.filter('length', function(value) {
+                return value.length
+            })
+
+            // 
             Vue.filter('popover', function(value, content) {
                 return '<span bx-name="components/popover" data-content="' + content + '">' + value + '</span>'
             })

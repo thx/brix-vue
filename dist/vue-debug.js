@@ -72,6 +72,11 @@ define(
             })
 
             // 
+            Vue.filter('length', function(value) {
+                return value.length
+            })
+
+            // 
             Vue.filter('popover', function(value, content) {
                 return '<span bx-name="components/popover" data-content="' + content + '">' + value + '</span>'
             })
@@ -160,9 +165,19 @@ define(
             if (dir.frag && dir.frag.node && dir.frag.node.nodeType === 1) {
                 nodes.push(dir.frag.node)
             }
+            if (dir.frag && dir.frag.end) {
+                Vue.util.mapNodeRange(dir.frag.node, dir.frag.end, function(node) {
+                    if (node && node.nodeType === 1) nodes.push(node)
+                })
+            }
             if (dir.frags && dir.frags.length) {
                 _.each(dir.frags, function(item /*, index*/ ) {
                     if (item && item.node && item.node.nodeType === 1) nodes.push(item.node)
+                    if (item && item.end) {
+                        Vue.util.mapNodeRange(item.node, item.end, function(node) {
+                            if (node && node.nodeType === 1) nodes.push(node)
+                        })
+                    }
                 })
             }
             if (dir.nodes && dir.nodes.length) {
