@@ -22,7 +22,7 @@ require(
             this.$manager = new EventManager('mx-')
 
             this.options = {
-                el: '#hero',
+                el: '#tmp',
                 data: {
                     array: ['foo', 'bar', 'faz'],
                     object: {
@@ -35,6 +35,7 @@ require(
                     model: {
                         checked3: []
                     },
+                    imageSrc: 'http://cn.vuejs.org/images/logo.png',
 
                     msg: Math.random(),
                     html: $('<div>').html(Math.random()).html(),
