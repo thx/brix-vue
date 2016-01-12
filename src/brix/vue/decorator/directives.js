@@ -98,7 +98,7 @@ define(
             if (!this.el || this.el.nodeType === 3 || this.el.nodeType === 8) return
 
             var nodes = related(this)
-            hook.call(this, nodes, value)
+            if (nodes.length) hook.call(this, nodes, value)
 
             // Loader.destroy(false, this.el);
             // view.undelegateEvents('#' + view.id)
@@ -112,7 +112,7 @@ define(
             if (!this.el || this.el.nodeType === 3 || this.el.nodeType === 8) return
 
             var nodes = related(this)
-            hook.call(this, nodes, value)
+            if (nodes.length) hook.call(this, nodes, value)
 
             // if ($.contains(document.body, this.el)) {
             //     Loader.boot(this.el, function( /*records*/ ) {

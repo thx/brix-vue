@@ -33,6 +33,19 @@
         </div>
     </div><hr>
     <div class="row">
+        <div class="col-sm-2">v-if - nested</div>
+        <div class="col-sm-10">
+            <input v-model="ifNested" class="mb10"><br>
+            <span v-if="ifNested">
+                <span>Yes!</span>
+                <span v-if="ifNested">
+                    <span>Go!</span>
+                </span>
+            </span>
+            <span v-else>No!</span>
+        </div>
+    </div><hr>
+    <div class="row">
         <div class="col-sm-2">v-show</div>
         <div class="col-sm-10">
             <input v-model="show" class="mb10"><br>
@@ -108,7 +121,7 @@
             </div>
         </div>
     </div><hr>
-    <div class="row" id="tmp">
+    <div class="row">
         <div class="col-sm-2">v-bind</div>
         <div class="col-sm-10">
             <img v-bind:src="imageSrc">
