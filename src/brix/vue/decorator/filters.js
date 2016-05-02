@@ -56,7 +56,6 @@ define(
 
             // 
             Vue.filter('accounting', function(value, precision) {
-                precision = precision || 2
                 return Accounting.formatNumber(value, precision)
             })
             Vue.filter('moment', {

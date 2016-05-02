@@ -57,7 +57,6 @@ define(
 
             // 
             Vue.filter('accounting', function(value, precision) {
-                precision = precision || 2
                 return Accounting.formatNumber(value, precision)
             })
             Vue.filter('moment', {
@@ -234,20 +233,52 @@ define(
 /* global define, Event */
 define(
     'brix/vue/decorator/components',[
-        'brix/loader'
+        'jquery', 'brix/loader'
     ],
     function(
-        Loader
+        $, Loader
     ) {
 
-        function fixComponents(context) {
-            var hooks = {
+        function fixComponents(context/*, value*/) {
+            var EVENT_HOOKS = {
                 'components/dropdown': ['change', 'dropdown'],
-                'components/datepickerwrapper': ['change', 'datepickerwrapper']
+                'components/datepickerwrapper': ['change', 'datepickerwrapper'],
+                'components/switch': ['change', 'switch']
+            }
+            for (var moduleId in EVENT_HOOKS) {
+                fixComponentEvent(moduleId, EVENT_HOOKS[moduleId][0], EVENT_HOOKS[moduleId][1], context)
             }
 
-            for (var moduleId in hooks) {
-                fixComponentEvent(moduleId, hooks[moduleId][0], hooks[moduleId][1], context)
+            var UPDATE_HOOKS = {
+                'components/dropdown': function(context) {
+                    var elements = $(context).closest('select[bx-name]')
+                    for (var i = 0; i < elements.length; i++) {
+                        var el = elements[i]
+                        var instance = Loader.query(el)[0]
+                        if (!instance) continue
+                        instance._fillSelect = $.noop
+                        instance.data(
+                            instance._parseDataFromSelect(instance.$element)
+                        )
+                        instance.val(
+                            $(el).val()
+                        )
+                    }
+                },
+                'components/switch': function(context) {
+                    var elements = $(context).closest('input[bx-name]')
+                    for (var i = 0; i < elements.length; i++) {
+                        var el = elements[i]
+                        var instance = Loader.query(el)[0]
+                        if (!instance) continue
+                        instance.checked(
+                            el.checked
+                        )
+                    }
+                }
+            }
+            for (moduleId in UPDATE_HOOKS) {
+                UPDATE_HOOKS[moduleId](context)
             }
         }
 
@@ -309,7 +340,7 @@ define('brix/vue/decorator',[
                 // boot
                 Loader.boot(nodes, function( /*records*/ ) {
                     // component
-                    fixComponents(nodes)
+                    fixComponents(nodes, value)
 
                     // event
                     if (owner.$manager) owner.$manager.delegate(vm.$el, owner)
@@ -317,7 +348,7 @@ define('brix/vue/decorator',[
             }
         })
 
-        function Decorator(view, options /* { before, after } */ ) {}
+        function Decorator(/* view, options { before, after } */ ) {}
 
         Decorator.prototype.ready = function() {}
         Decorator.prototype.watch = function() {}

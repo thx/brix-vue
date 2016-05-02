@@ -42,7 +42,7 @@ define([
                 // boot
                 Loader.boot(nodes, function( /*records*/ ) {
                     // component
-                    fixComponents(nodes)
+                    fixComponents(nodes, value)
 
                     // event
                     if (owner.$manager) owner.$manager.delegate(vm.$el, owner)
@@ -50,7 +50,7 @@ define([
             }
         })
 
-        function Decorator(view, options /* { before, after } */ ) {}
+        function Decorator(/* view, options { before, after } */ ) {}
 
         Decorator.prototype.ready = function() {}
         Decorator.prototype.watch = function() {}

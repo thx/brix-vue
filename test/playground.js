@@ -33,7 +33,8 @@ require(
                     number: 10,
                     string: 'foo',
                     model: {
-                        checked3: []
+                        checked3: [],
+                        checked4: false
                     },
                     imageSrc: 'http://cn.vuejs.org/images/logo.png',
                     ifNested: '',
