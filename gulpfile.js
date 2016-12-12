@@ -2,100 +2,65 @@
 /* global console */
 
 var gulp = require('gulp')
-var through = require('through2')
 var connect = require('gulp-connect')
 var jshint = require('gulp-jshint')
-var mochaPhantomJS = require('gulp-mocha-phantomjs')
-var rjs = require('gulp-requirejs')
-var uglify = require('gulp-uglify')
-var exec = require('child_process').exec
+var webpack = require('webpack')
 
-var istanbul = require('gulp-istanbul')
-var mocha = require('gulp-mocha')
-var coveralls = require('gulp-coveralls')
-
-gulp.task('hello', function() {
-    console.log((function() {
-        /*
-______        _         _                        _             
-| ___ \      (_)       | |                      | |            
-| |_/ / _ __  _ __  __ | |      ___    __ _   __| |  ___  _ __ 
-| ___ \| '__|| |\ \/ / | |     / _ \  / _` | / _` | / _ \| '__|
-| |_/ /| |   | | >  <  | |____| (_) || (_| || (_| ||  __/| |   
-\____/ |_|   |_|/_/\_\ \_____/ \___/  \__,_| \__,_| \___||_|   
-                                                
-        */
-    }).toString().split('\n').slice(2, -2).join('\n') + '\n')
-})
-
-// https://github.com/AveVlad/gulp-connect
 gulp.task('connect', function() {
     connect.server({
         port: 4248
     })
 })
 
-// https://github.com/spenceralger/gulp-jshint
-gulp.task('jshint', function() {
-    var globs = [
-        'src/**/*.js', 'test/*.js', 'gulpfile.js'
-    ]
-    return gulp.src(globs)
+gulp.task('__lint', function() {
+    return gulp.src(['src/**/*.js', 'test/*.js', 'gulpfile.js'])
         .pipe(jshint('.jshintrc'))
         .pipe(jshint.reporter('jshint-stylish'))
 })
-
-// https://github.com/mrhooray/gulp-mocha-phantomjs
-gulp.task('mocha', function() {
-    return gulp.src('test/*.html')
-        .pipe(mochaPhantomJS({
-            reporter: 'spec'
-        }))
+gulp.task('lint', ['__lint'], function( /*cb*/ ) {
+    return gulp.watch(['src/**/*.js', 'test/*.js', 'gulpfile.js'], ['__lint'])
 })
 
-// https://github.com/RobinThrift/gulp-requirejs
-gulp.task('rjs', function() {
-    var build = {
-        baseUrl: 'src',
-        out: 'dist/vue.js',
-        name: 'brix/vue',
-        paths: {
-            vue: 'empty:',
-            'brix/loader': 'empty:',
-            jquery: 'empty:',
-            underscore: 'empty:',
-            accounting: 'empty:',
-            moment: 'empty:'
-        }
-    }
-    rjs(build)
-        .pipe(gulp.dest('.')) // pipe it to the output DIR
-})
+gulp.task("__webpack", function( /*cb*/ ) {
+    webpack({
+        entry: './src/brix/vue/decorator.js',
+        output: {
+            path: './dist',
+            filename: 'vue.decorator-debug.js',
+            library: 'VueDecorator',
+            libraryTarget: 'umd'
+        },
+        externals: ['vue', 'brix/loader', 'jquery', 'underscore'],
+    }, function(err /*, stats*/ ) {
+        if (err) throw err
+    })
+    webpack({
+        entry: './src/brix/vue/decorator.js',
+        output: {
+            path: './dist',
+            filename: 'vue.decorator.js',
+            library: 'VueDecorator',
+            libraryTarget: 'umd'
+        },
+        externals: ['vue', 'brix/loader', 'jquery', 'underscore'],
+        devtool: 'source-map',
+        plugins: [
+            new webpack.optimize.UglifyJsPlugin({
+                minimize: true
+            })
+        ]
+    }, function(err /*, stats*/ ) {
+        if (err) throw err
+    })
 
-// https://github.com/terinjokes/gulp-uglify
-gulp.task('compress', function() {
-    gulp.src(['dist/**.js', '!dist/**-debug.js'])
-        .pipe(through.obj(function(file, encoding, callback) { /* jshint unused:false */
-            file.path = file.path.replace(
-                '.js',
-                '-debug.js'
-            )
-            callback(null, file)
-        }))
-        .pipe(gulp.dest('dist/'))
-    gulp.src(['dist/**.js', '!dist/**-debug.js'])
-        .pipe(uglify())
-        .pipe(gulp.dest('dist/'))
 })
-
-// https://github.com/floatdrop/gulp-watch
-var watchTasks = ['hello', 'madge', 'jshint', 'rjs', 'compress', 'mocha']
-gulp.task('watch', function( /*callback*/ ) {
-    gulp.watch(['src/**/*.js', 'gulpfile.js', 'test/*'], watchTasks)
+gulp.task("webpack", ['__webpack'], function( /*cb*/ ) {
+    return gulp.watch(['src/**/*.js'], ['__webpack'])
 })
 
 // https://github.com/pahen/madge
-gulp.task('madge', function( /*callback*/ ) {
+gulp.task('madge', function( /*cb*/ ) {
+    var exec = require('child_process').exec
     exec('madge --format amd ./src/',
         function(error, stdout /*, stderr*/ ) {
             if (error) console.log('exec error: ' + error)
@@ -110,43 +75,4 @@ gulp.task('madge', function( /*callback*/ ) {
     )
 })
 
-// TODO
-
-// https://github.com/SBoudrias/gulp-istanbul
-gulp.task('istanbul', function(cb) {
-    gulp.src(['test/test.coveralls.js'])
-        .pipe(istanbul()) // Covering files
-        .on('finish', function() {
-            gulp.src(['test/test.coveralls.js'])
-                .pipe(mocha({}))
-                .pipe(istanbul.writeReports()) // Creating the reports after tests runned
-                .on('end', cb)
-        })
-})
-gulp.task('istanbulForMochaPhantomJS', function(cb) {
-    gulp.src(['dist/*.js'])
-        .pipe(istanbul()) // Covering files
-        .on('finish', function() {
-            gulp.src(['test/*.html'])
-                .pipe(mochaPhantomJS({}))
-                .pipe(istanbul.writeReports()) // Creating the reports after tests runned
-                .on('end', cb)
-        })
-})
-
-// https://github.com/markdalgleish/gulp-coveralls
-gulp.task('coveralls', ['istanbul'], function() {
-    return gulp.src('coverage/**/lcov.info')
-        .pipe(coveralls())
-})
-
-// 
-gulp.task('publish', function() {
-    var child_process = require('child_process')
-    child_process.exec('ls', function(error, stdout, stderr) {
-        console.log(error, stdout, stderr)
-    })
-})
-
-gulp.task('default', watchTasks.concat(['watch','connect']))
-gulp.task('build', ['jshint', 'rjs', 'mocha'])
+gulp.task('default', ['lint', 'webpack'])

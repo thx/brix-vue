@@ -3,5 +3,6 @@
     "strict": false,
     "undef": true,
     "unused": "strict",
-    "multistr": true
+    "browser": true,
+    "node": true
 }

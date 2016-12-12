@@ -3,7 +3,7 @@
 <script>
     require.config({
         paths: {
-            'brix/vue': '../dist/vue-debug'
+            'brix/vue': '../dist/vue.decorator-debug'
         }
     })
 </script>
@@ -63,10 +63,10 @@
             <div><span v-for="item in number">{{ item }} , </span></div>
             <div><span v-for="item in string">{{ item }} , </span></div>
             <div>
-                <tepmlate v-for="item in array">
+                <template v-for="item in array">
                     <span>{{ item }}</span>
                     <span>{{ item }}</span>，
-                </tepmlate>
+                </template>
             </div>
         </div>
     </div><hr>
@@ -254,7 +254,7 @@
                 </table>
             </div>
             <hr>
-            <tepmlate v-if="if" class="mb20 mr10">
+            <template v-if="if" class="mb20 mr10">
                 <select bx-name="components/dropdown" v-model="dropdown" data-value="1" class="dropdown">
                     <optgroup label="optgroup 1">
                         <option value="1">Action</option>
@@ -277,7 +277,7 @@
                         <option value="3">Something else here</option>
                     </optgroup>
                 </select>
-            </tepmlate>
+            </template>
         </div>
     </div><hr>
     <div class="row">
@@ -309,6 +309,12 @@
                 </ul>
                 <div v-else>empty</div>
             </div>
+        </div>
+    </div><hr>
+    <div class="row">
+        <div class="col-sm-2">ICON</div>
+        <div class="col-sm-10">
+            <span class="brixfont" v-html="icon"></span>
         </div>
     </div><hr>
 

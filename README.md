@@ -1,3 +1,2 @@
-Brix Vue
+Brix with Vue.js
 ===========
-
