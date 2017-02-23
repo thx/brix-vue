@@ -2,11 +2,11 @@
 require(
     [
         'brix/loader', 'brix/event', 'brix/vue',
-        'vue', 'jquery', 'log', 'accounting', 'moment'
+        'vue', 'jquery', 'accounting', 'moment'/*, 'log'*/
     ],
     function(
         Loader, EventManager, VueDecorator,
-        Vue, $, log, Accounting, moment
+        Vue, $, Accounting, moment/*, log*/
     ) {
         window.Vue = Vue
         Vue.config.debug = true
@@ -115,26 +115,38 @@ require(
                     cursor: 1,
                     limit: 10,
                     list: [0, 1, 2],
+                    dropdowns: [
+                        { disabled: true },
+                        { disabled: false }
+                    ],
                     name: '',
                     users: [{
-                        name: 'Bruce'
+                        name: 'Bruce',
+                        desc: 'foo'
                     }, {
-                        name: 'Chuck'
+                        name: 'Chuck',
+                        desc: 'bar'
                     }, {
-                        name: 'Jackie'
+                        name: 'Jackie',
+                        desc: 'faz'
                     }],
+                    filterBy1: [],
+                    myCustomFilterFunction: function(item, index, arr){
+                        console.log(view.options.data.filterBy1)
+                        return false // 显示返回 true，不显示返回 false
+                    },
                     icon: '&#xe623;'
                 },
                 computed: {},
                 methods: {},
                 created: function() {
-                    log('[ LifeCycle     ] _created_        ', arguments)
+                    console.log('[ LifeCycle     ] _created_        ', arguments)
                 },
                 compiled: function() {
-                    log('[ LifeCycle     ] _compiled_       ', arguments)
+                    console.log('[ LifeCycle     ] _compiled_       ', arguments)
                 },
                 ready: function() {
-                    log('[ LifeCycle     ] _ready_          ', arguments)
+                    console.log('[ LifeCycle     ] _ready_          ', arguments)
                     var vm = this
                     Loader.boot(this.el, function() {
                         Vue.Decorator.fixComponents()
@@ -142,10 +154,10 @@ require(
                     })
                 },
                 beforeDestroy: function() {
-                    log('[ LifeCycle     ] _beforeDestroy_  ', arguments)
+                    console.log('[ LifeCycle     ] _beforeDestroy_  ', arguments)
                 },
                 destroyed: function() {
-                    log('[ LifeCycle     ] _destroyed_      ', arguments)
+                    console.log('[ LifeCycle     ] _destroyed_      ', arguments)
                     this.view = undefined
                 }
             }

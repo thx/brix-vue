@@ -1,4 +1,4 @@
-<script src="http://g.tbcdn.cn/thx/brix-release/0.1.7/require-config-css-debug.js"></script>
+<script src="http://g.tbcdn.cn/thx/brix-release/1.0.0-beta.2/require-config-css-debug.js"></script>
 <!-- <script src="http://mo.local:4242/require-config-css.js"></script> -->
 <script>
     require.config({
@@ -140,7 +140,21 @@
         <div class="col-sm-2">dropdown</div>
         <div class="col-sm-10">
             <span class="mb20 mr10" v-for="item in list">
-                <select bx-name="components/dropdown" v-model="dropdown" data-value="1" mx-change="">
+                <select bx-name="components/dropdown" v-model="dropdown" data-value="1" mx-change="" :disabled="item==0">
+                    <optgroup label="optgroup 1">
+                        <option value="1">Action</option>
+                    </optgroup>
+                    <optgroup label="optgroup 2">
+                        <option value="2">Another action</option>
+                    </optgroup>
+                    <optgroup label="optgroup 3">
+                        <option value="3">Something else here</option>
+                    </optgroup>
+                </select>
+                {{dropdown}}
+            </span>
+            <span class="mb20 mr10" v-for="item in dropdowns">
+                <select bx-name="components/dropdown" v-model="dropdown" data-value="1" mx-change="" :disabled="item.disabled">
                     <optgroup label="optgroup 1">
                         <option value="1">Action</option>
                     </optgroup>
@@ -304,6 +318,21 @@
                 <div v-text="users | filterBy name in 'name' | length"></div>
                 <ul v-show="users | filterBy name in 'name' | length">
                     <li v-for="user in users | filterBy name in 'name'">
+                        {{ user.name }}
+                    </li>
+                </ul>
+                <div v-else>empty</div>
+            </div>
+        </div>
+        <div class="col-sm-2">filterBy Function</div>
+        <div class="col-sm-10">
+            <div id="filter-by-example">
+                <label> <input v-model="filterBy1" type="checkbox" name="filterByFunction" value="foo"> filterBy1 </label>
+                <label> <input v-model="filterBy1" type="checkbox" name="filterByFunction" value="bar"> filterBy1 </label>
+                <input v-model="filterBy1">
+                <input v-model="filterBy2">
+                <ul>
+                    <li v-for="user in users | filterBy myCustomFilterFunction">
                         {{ user.name }}
                     </li>
                 </ul>

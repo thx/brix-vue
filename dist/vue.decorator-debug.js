@@ -311,6 +311,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Loader = __webpack_require__(8)
 	var Vue = __webpack_require__(2)
 
+	// 创建创建自定义事件，兼容 IE9 IE10
+	try {
+	    new window.Event('custom')
+	} catch (exception) {
+	    window.Event = function(type, bubbles, cancelable, detail) {
+	        var event = document.createEvent('CustomEvent') // MUST be 'CustomEvent'
+	        event.initCustomEvent(type, bubbles, cancelable, detail)
+	        return event
+	    }
+	}
+
 	var CLOSEST_HOOKS = {
 	    'components/dropdown': 'select[bx-name]',
 	    'components/switch': 'input[bx-name]',
@@ -326,6 +337,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            instance._parseDataFromSelect(instance.$element)
 	        )
 	        instance.val($(el).val(), false)
+	        instance.disabled(
+	            $(el).prop('disabled')
+	        )
 	    },
 	    'components/switch': function(el) {
 	        var instance = Loader.query(el)[0]
